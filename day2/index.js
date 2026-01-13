@@ -1,10 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
-const port = 3000;
 
 const time = new Date();
-const currentTime = time.toLocaleTimeString();
+
 
 const githubData = {
   "login": "SalmanZulfiqarShaikh",
@@ -42,6 +41,10 @@ const githubData = {
   "updated_at": "2026-01-12T14:36:50Z"
 };
 
+app.get('/welcomePage',(req,res) => {
+     res.send(`<h1>Welcome to Manify Global</h1> <br> <p>The largest AI agency in Pakistan</p>`)
+})
+
 app.get('/', (req, res) => {
     res.send('Karachi Kings');
 })
@@ -54,7 +57,11 @@ app.get('/baazar', (req, res) => {
 })
 
 app.get('/github', (req, res) => {
-     res.send('Salman Zulfiqar Shaikh');
+     res.json({
+  username: "SalmanZulfiqarShaikh",
+  platform: "GitHub"
+});
+
 })
 //app.METHOD(PATH, HANDLER) 
 app.get('/login', (req,res) => {
@@ -70,7 +77,18 @@ app.get('/about', (req,res) => {
 })
 
 app.get('/time', (req,res) => {
+    const currentTime = time.toLocaleTimeString();
     res.send(`<h1>Current Time is: ${currentTime}</h1>`)
+})
+
+app.get('/profile', (req,res) => {
+     res.json({
+        name: "Salman",
+        age: 19,
+        uni: "UBIT",
+        married: false,
+        role: "SWE",
+     })
 })
 
 app.listen(process.env.PORT || 3000, () => {
