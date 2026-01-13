@@ -43,10 +43,17 @@ app.get('/', (req, res) => {
     res.send('Karachi Kings');
 })
 
+app.get('/baazar', (req, res) => {
+       res.json({
+           email: 'support@baazar.com',
+           phone: '+92 300 1234567'
+       })
+})
+
 app.get('/github', (req, res) => {
      res.send('Salman Zulfiqar Shaikh');
 })
-
+//app.METHOD(PATH, HANDLER) 
 app.get('/login', (req,res) => {
     res.send('<h1>Please Login at Manify/</h1>')
 });
@@ -59,7 +66,7 @@ app.get('/about', (req,res) => {
     res.send('<h1>About Manify</h1><p>Manify is a platform for learning and growth.</p>')
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server file loaded");
-    console.log(`Example app listening at http://localhost:${process.env.PORT}`);
+    console.log(`Example app listening at http://localhost:${process.env.PORT || 3000}`);
 });
