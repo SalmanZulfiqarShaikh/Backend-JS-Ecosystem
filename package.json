@@ -1,0 +1,28 @@
+{
+  "name": "25",
+  "version": "1.0.0",
+  "description": "25 days of backend Challenge Started on January 12 2026",
+  "keywords": [
+    "node",
+    "salman"
+  ],
+  "homepage": "https://github.com/SalmanZulfiqarShaikh/25DaysBackendChallenge#readme",
+  "bugs": {
+    "url": "https://github.com/SalmanZulfiqarShaikh/25DaysBackendChallenge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SalmanZulfiqarShaikh/25DaysBackendChallenge.git"
+  },
+  "license": "ISC",
+  "author": "Salman Zulfiqar Shaikh",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node day2/index.js"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.4",
+    "express": "^5.2.1"
+  }
+}
