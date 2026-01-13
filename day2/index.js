@@ -3,6 +3,9 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
+const time = new Date();
+const currentTime = time.toLocaleTimeString();
+
 const githubData = {
   "login": "SalmanZulfiqarShaikh",
   "id": 150047031,
@@ -64,6 +67,10 @@ app.get('/data', (req,res) => {
 
 app.get('/about', (req,res) => {
     res.send('<h1>About Manify</h1><p>Manify is a platform for learning and growth.</p>')
+})
+
+app.get('/time', (req,res) => {
+    res.send(`<h1>Current Time is: ${currentTime}</h1>`)
 })
 
 app.listen(process.env.PORT || 3000, () => {
