@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import axios from 'axios'
 import viteLogo from '/vite.svg'
@@ -8,6 +8,9 @@ function App() {
 
   const [Jokes, setJokes] = useState([])
 
+
+  useEffect(() => {
+
   axios.get('http://localhost:3000/jokes')
     .then((response) => {
       setJokes(response.data)
@@ -15,6 +18,8 @@ function App() {
     .catch((error) => {
       console.error('Error fetching jokes:', error);
     });
+    },[
+    ]);
 
 
 
