@@ -37,6 +37,32 @@ app.get('/api/jokes', (req,res) => {
     res.send(jokes);
 })
 
+app.get('/hello/me', (req, res) => {
+     const data = [
+        {
+              type: "Name:",
+              ans: "Muhammad Salman"
+     },
+     {
+            type: "Country:",
+            ans: "Pakistan"
+     },
+        {
+            type: "City:",
+            ans: "Karachi"
+        },
+        {
+            type: "Age:",
+            ans: 19
+        },
+          {
+            type: "Occupation:",
+            ans: "Student/Developer"
+          } 
+    ]
+     res.send(data);
+})
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

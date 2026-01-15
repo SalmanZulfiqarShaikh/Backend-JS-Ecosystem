@@ -5,6 +5,7 @@ import './App.css'
 function App() {
 
   const [Jokes, setJokes] = useState([])
+  const [User, setUser] = useState(null)
 
 
   useEffect(() => {
@@ -17,6 +18,15 @@ function App() {
       console.error('Error fetching jokes:', error);
     });
     },[]);
+
+
+    useEffect(() => {
+    axios.get('/hello/me').then((response) => {
+          setUser(response.data)
+    }).catch((error) => {
+        console.error('Error fetching user data:', error);
+    },[])
+    })
 
 
 
@@ -34,6 +44,15 @@ function App() {
           </div>
         )
 }
+
+
+        <h1>User Information:</h1>
+
+        {User && User.map((info) => (
+          <div key={info.type}>
+            <h3>{info.type} {info.ans}</h3>
+          </div>
+        ))}
     </>
   )
 }
