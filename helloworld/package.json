@@ -1,0 +1,16 @@
+{
+  "name": "helloworld",
+  "version": "1.0.0",
+  "description": "first node program",
+  "keywords": [
+    "salman"
+  ],
+  "license": "ISC",
+  "author": "Salman Zulfiqar Shaikh",
+  "type": "commonjs",
+  "main": "hello.js",
+  "scripts": {
+    "test": "hi",
+    "start": "node hello.js"
+  }
+}
