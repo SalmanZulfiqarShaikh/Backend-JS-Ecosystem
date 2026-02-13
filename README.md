@@ -1,6 +1,6 @@
-# 25DaysBackendChallenge
-25 days of backend Challenge Started on Feb 11 2026
+# RamadanBackendChallenge
+Backend Challenge Started on Feb 13 2026
 
-Documenting my Backend development journey
+Documenting my Backend development journey (I knew most of the stuff just some revision lolllll)
 
-These are just the tutorials code (as I work on three different computers), my rest of the code and my personal practice is in different files
+These are just the tutorials code 
