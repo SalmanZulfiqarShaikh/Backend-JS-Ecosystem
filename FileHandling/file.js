@@ -36,3 +36,9 @@ fs.writeFileSync("./contacts.txt", "Salman: +923368292028\nShahrukh: +9233673739
 fs.writeFile("./contacts.txt", "Saif: +92336737398", (err) => {
     console.log(err);
 })
+
+fs.unlink("./filer.js", (err) => {
+    console.log("File deleted successfully");
+
+    console.log(err);
+})
