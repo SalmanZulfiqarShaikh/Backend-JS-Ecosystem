@@ -22,10 +22,17 @@ fs.readFile("./contacts.txt", "utf-8", (err, data) => {
 }) // utf-8 is for encoding
 
 
-fs.appendFile("./contacts.txt", `\n ${Date.now()}Aamir: +92336737398`, (err) => {
+fs.appendFile("./contacts.txt", `\n ${Date.now()}bhaff `, (err) => {
     if (err) {
         console.log(err);
     }
 })
 
 
+fs.writeFileSync("./contacts.txt", "Salman: +923368292028\nShahrukh: +92336737398\nAamir: +92336737398", (err) => {
+     console.log(err);
+});
+
+fs.writeFile("./contacts.txt", "Saif: +92336737398", (err) => {
+    console.log(err);
+})
