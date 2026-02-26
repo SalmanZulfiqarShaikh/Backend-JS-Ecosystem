@@ -6,7 +6,11 @@ const myServer = http.createServer((req, res) => {
 
     const logTime = new Date().toLocaleString('en-GB');
 
-    fs.appendFile("logs.txt", logTime + " - " + req.url + "    "  +  res.statusCode + res.statusMessage + "\n", (err) => {
+    fs.appendFile("logs.txt", logTime + " - " + req.url + "    "  +  res.statusCode + "\n", (err) => {
+
+        if (req.url == "favicon.ico") {
+            return;
+        }
 
         switch (req.url) {
             case "/":

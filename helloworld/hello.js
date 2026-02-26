@@ -8,3 +8,6 @@ console.log(add(5,7));
 bakchodi.abc();
 
 bakchodi.xyz(5,7);
+
+
+bakchodi.mkc("salman","mani")

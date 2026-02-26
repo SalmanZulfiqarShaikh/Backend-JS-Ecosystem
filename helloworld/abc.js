@@ -8,4 +8,10 @@ function xyz(a,b){
     console.log("Yoyo honey singh");
     
 }
-module.exports = {abc,xyz};
+
+
+function mkc(a,b){
+     console.log(`my name is ${a} and my nickname is ${b}`);
+     
+}
+module.exports = {abc,xyz,mkc};
