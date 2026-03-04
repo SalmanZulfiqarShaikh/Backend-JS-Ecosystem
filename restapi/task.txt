@@ -2,13 +2,13 @@ Rest API - Json
 
 GET /users - List all users - done
 
-GET /users1 - List all users with id 1
+GET /users1 - List all users with id 1 done
 
-GET /users2 - List all users with id 2
+GET /users2 - List all users with id 2 done
 
 
 
-Post /users - Create new users
+Post /users - Create new users done
 
 Patch /users/1 - Edit the user with id1
 
