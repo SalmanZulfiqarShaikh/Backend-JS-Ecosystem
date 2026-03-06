@@ -16,10 +16,6 @@ app.use(express.json())
 app.get("/",(req,res)=>{
       res.send(`Welcome to our API ! We have started the server at port ${port}`)
 })
-
-
-
-
 app.route("/users").get((req,res)=>{
 
     const listItems = users
@@ -64,9 +60,6 @@ app.route("/users").get((req,res)=>{
     fs.writeFileSync("./testingdata.json", JSON.stringify(users, null, 2));
     res.json({ status: "deleted", user: deletedUser });
 })
-
-
-
 app.get(("/users/id/:id"),(req,res)=>{
       const id = Number(req.params.id)
       const user = users.find(u => u.id === id)
@@ -75,7 +68,6 @@ app.get(("/users/id/:id"),(req,res)=>{
       }
       res.send(user.name)
 })
-
 app.get(("/users/name/:name"),(req,res)=>{
      const name = req.params.name.toLowerCase()
      const user = users.find(u => u.name.toLowerCase() === name)
