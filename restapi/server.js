@@ -1,59 +1,170 @@
 const express = require('express');
-const fs = require("fs");
-let users = require('./MOCK_DATA.json'); // use let so we can reassign
 const app = express();
 const port = 3000;
+const mongoose = require('mongoose');
 
+// Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// ========================================
+// MONGODB CONNECTION
+// ========================================
+mongoose.connect('mongodb://127.0.0.1:27017/myfirstdb')
+    .then(() => console.log("MongoDB Connected ✅"))
+    .catch(err => console.log("MongoDB Error:", err));
+
+// ========================================
+// SCHEMA & MODEL
+// ========================================
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    jobTitle: { // ✅ Fixed typo
+        type: String
+    },
+    gender: {
+        type: String,
+        required: true
+    }
+}, { timestamps: true }); // ✅ Auto createdAt/updatedAt
+
+// ✅ Capital U for model (convention)
+const User = mongoose.model('user', userSchema);
+
+// ========================================
+// ROUTES
+// ========================================
 
 // Root route
 app.get('/', (req, res) => {
     res.send("Welcome to our API");
 });
 
-// GET + POST + PATCH + DELETE
-app.route('/users')
-    .get((req, res) => {
+// GET all users
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({});
         res.json(users);
-    })
-    .post((req, res) => {
-        const body = req.body;
-        const newUser = { id: users.length + 1, ...body };
-        users.push(newUser);
-        fs.writeFileSync("./MOCK_DATA.json", JSON.stringify(users, null, 2));
-        res.json({ status: "success", user: newUser });
-    })
-    .patch((req, res) => {
-        const change = req.body;
-        const user = users.find(u => u.id === change.id);
-        if (!user) return res.status(404).json({ error: "User not found" });
-        Object.assign(user, change);
-        fs.writeFileSync("./MOCK_DATA.json", JSON.stringify(users, null, 2));
-        res.json({ status: "updated", user });
-    })
-    .delete((req, res) => {
-        const { id } = req.body;
-        const exists = users.some(u => u.id === id);
-        if (!exists) return res.status(404).json({ error: "User not found" });
-        users = users.filter(u => u.id !== id);
-        fs.writeFileSync("./MOCK_DATA.json", JSON.stringify(users, null, 2));
-        res.json({ status: "deleted", id });
-    });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-// Get user by ID
-app.get('/users/id/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const user = users.find(u => u.id === id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
+// POST create user
+app.post('/users', async (req, res) => {
+    try {
+        const body = req.body;
+        
+        if (
+            !body ||
+            !body.firstName ||
+            !body.lastName ||
+            !body.email ||
+            !body.gender ||
+            !body.jobTitle
+        ) {
+            return res.status(400).json({ msg: "All fields are required" });
+        }
+
+        const newUser = await User.create({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            email: body.email,
+            gender: body.gender,
+            jobTitle: body.jobTitle
+        });
+
+        return res.status(201).json({ 
+            msg: "success", 
+            user: newUser 
+        });
+    } catch (error) {
+        // Handle duplicate email error
+        if (error.code === 11000) {
+            return res.status(409).json({ error: "Email already exists" });
+        }
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+// PATCH update user by ID
+app.patch('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updates = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            updates,
+            { new: true, runValidators: true } // Return updated doc
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ status: "updated", user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE user by ID
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ status: "deleted", user: deletedUser });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get user by MongoDB ID
+app.get('/users/id/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // Get users by gender
-app.get('/users/gender/:gender', (req, res) => {
-    const gender = req.params.gender.toLowerCase();
-    const filtered = users.filter(u => u.gender.toLowerCase() === gender);
-    res.json(filtered);
+app.get('/users/gender/:gender', async (req, res) => {
+    try {
+        const gender = req.params.gender;
+        const users = await User.find({ 
+            gender: new RegExp(gender, 'i') // Case-insensitive
+        });
+
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 app.listen(port, () => {
