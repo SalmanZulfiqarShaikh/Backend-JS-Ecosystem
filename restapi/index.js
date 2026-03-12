@@ -1,31 +1,18 @@
 const express = require("express");
-
 const app = express();
-
 const port = 8080;
-
 const users = require('./testingdata.json');
-
 const fs = require('fs');
 const { log } = require("console");
-
-
 app.use(express.urlencoded({extended : false}))
 app.use(express.json())
-
 app.get("/",(req,res)=>{
       res.send(`Welcome to our API ! We have started the server at port ${port}`)
 })
-
-
-
-
 app.route("/users").get((req,res)=>{
-
     const listItems = users
         .map(user => `<li style="color:#b8860b;">${user.name}</li>`)
         .join("");
-
     const html = `
     <html>
         <body>
@@ -36,7 +23,6 @@ app.route("/users").get((req,res)=>{
         </body>
     </html>
     `;
-
     res.send(html);
 }).post((req,res)=>{
     const body = req.body
@@ -49,9 +35,7 @@ app.route("/users").get((req,res)=>{
     const change = req.body;
     console.log(change);
     const user = users.find(u => u.id === change.id)
-
     if (!user) return res.status(404).json({ error: "User not found" });
-
     Object.assign(user,change);
     fs.writeFileSync("./testingdata.json",JSON.stringify(users,null,2));
     res.send({ status: "success", user });
@@ -59,14 +43,10 @@ app.route("/users").get((req,res)=>{
     const {id} = req.body;
     const index = users.findIndex(u => u.id === id);
     if (index === -1) return res.status(404).json({ error: "User not found" });
-
     const deletedUser = users.splice(index, 1)[0]; // remove user from array
     fs.writeFileSync("./testingdata.json", JSON.stringify(users, null, 2));
     res.json({ status: "deleted", user: deletedUser });
 })
-
-
-
 app.get(("/users/id/:id"),(req,res)=>{
       const id = Number(req.params.id)
       const user = users.find(u => u.id === id)
@@ -75,13 +55,11 @@ app.get(("/users/id/:id"),(req,res)=>{
       }
       res.send(user.name)
 })
-
 app.get(("/users/name/:name"),(req,res)=>{
      const name = req.params.name.toLowerCase()
      const user = users.find(u => u.name.toLowerCase() === name)
      res.send(`${user.id}.${user.name} `)
 })
-
 app.get("/users/company/:company",(req,res)=>{
      const company = req.params.company.toLowerCase()
      const filteredUsers = users.filter(u => u.company && u.company.toLowerCase() === company)
@@ -91,7 +69,6 @@ app.get("/users/company/:company",(req,res)=>{
      const listItems = filteredUsers
         .map(u => `<li style="color:#b8860b;">${u.name}</li>`)
         .join("")
-
      const html = `
      <html>
         <body>
@@ -104,7 +81,6 @@ app.get("/users/company/:company",(req,res)=>{
      `
      res.send(html)
 })
-
 app.get("/users/username/:username",(req,res)=>{
      const username = req.params.username.toLowerCase()
      const filteredUsers = users.filter(u => u.username && u.username.toLowerCase() === username)
