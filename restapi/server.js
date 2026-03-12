@@ -30,16 +30,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    jobTitle: { // ✅ Fixed typo
+    jobTitle: { 
         type: String
     },
     gender: {
         type: String,
         required: true
     }
-}, { timestamps: true }); // ✅ Auto createdAt/updatedAt
+}, { timestamps: true });
 
-// ✅ Capital U for model (convention)
+// 
 const User = mongoose.model('user', userSchema);
 
 // ========================================
