@@ -1,0 +1,213 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                       MONGODB SHELL CHEAT SHEET                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. DATABASES & COLLECTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+show dbs                          // List all databases
+use myProject                     // Switch to (or create) a database
+db                                // Show current database name
+db.createCollection("users")      // Manually create a collection
+show collections                  // List all collections in current DB
+db.users.drop()                   // Drop the 'users' collection
+db.dropDatabase()                 // Drop the current database
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2. INSERT (CREATE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.insertOne({ name: "Salman", role: "AI Engineer" })
+
+db.users.insertMany([
+  { name: "Ali",  age: 24, skills: ["Python", "JS"]   },
+  { name: "Sara", age: 22, skills: ["React",  "Node"] }
+])
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  3. FIND (READ) & PROJECTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.find()                              // Get all documents
+db.users.find({ name: "Salman" })            // Exact match
+db.users.findOne({ age: 22 })               // First match only
+db.users.find({}, { name: 1, _id: 0 })      // Show name, hide _id
+db.users.find({}, { password: 0 })          // Exclude a field
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  4. COMPARISON & LOGICAL OPERATORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.find({ age: { $gt: 20 } })               // greater than
+db.users.find({ age: { $gte: 20 } })              // greater than or equal
+db.users.find({ age: { $lt: 30 } })               // less than
+db.users.find({ age: { $lte: 30 } })              // less than or equal
+db.users.find({ age: { $gt: 20, $lte: 30 } })     // range
+db.users.find({ name: { $ne: "John" } })          // not equal
+db.users.find({ name: { $in: ["Ali", "Sara"] } }) // matches any in array
+db.users.find({ name: { $nin: ["Ali", "Sara"] } })// not in array
+
+db.users.find({ $or:  [{ age: 22 }, { role: "Dev" }] })  // OR
+db.users.find({ $and: [{ age: 22 }, { role: "Dev" }] })  // AND (explicit)
+
+db.users.find({ role: { $exists: true } })        // field exists
+db.users.find({ age:  { $type: "number" } })      // check data type
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  5. SORT, LIMIT & SKIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.find().sort({ age: 1 })           // ascending
+db.users.find().sort({ age: -1 })          // descending
+db.users.find().limit(5)                   // first 5 docs
+db.users.find().skip(10)                   // skip first 10 (pagination)
+db.users.find().sort({ age: -1 }).limit(1) // oldest user
+db.users.countDocuments({ role: "Dev" })   // count matches
+db.users.distinct("role")                  // all unique values of a field
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  6. UPDATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// Update operators
+$set    → set/update a field value
+$unset  → remove a field
+$inc    → increment a number          e.g. { $inc: { age: 1 } }
+$rename → rename a field              e.g. { $rename: { old: "new" } }
+
+db.users.updateOne(
+  { name: "Salman" },
+  { $set: { role: "Full Stack Engineer" } }
+)
+
+db.users.updateMany(
+  { age: { $lt: 25 } },
+  { $set: { status: "Junior" } }
+)
+
+db.users.updateOne(
+  { name: "Salman" },
+  { $unset: { temporaryField: "" } }        // remove field
+)
+
+db.users.updateOne(
+  { name: "Zara" },
+  { $set: { role: "Designer" } },
+  { upsert: true }                          // insert if not found
+)
+
+db.users.replaceOne({ name: "Ali" }, { name: "Ali", age: 25 }) // full replace
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  7. ARRAY OPERATORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.updateOne({ name: "Ali" }, { $push: { skills: "MongoDB" } })  // add
+db.users.updateOne({ name: "Ali" }, { $pull: { skills: "JS" } })       // remove
+db.users.updateOne({ name: "Ali" }, { $addToSet: { skills: "Go" } })   // add if not exists
+
+db.users.find({ skills: { $all: ["Python", "JS"] } })  // has ALL values
+db.users.find({ skills: { $size: 2 } })                // exact array length
+db.users.find({ skills: { $elemMatch: { $eq: "JS" } } }) // element matches condition
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  8. DELETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.deleteOne({ name: "Ali" })         // delete first match
+db.users.deleteMany({ status: "Inactive" }) // delete all matches
+db.users.deleteMany({})                     // delete ALL docs (keep collection)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  9. INDEXES (PERFORMANCE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+db.users.createIndex({ name: 1 })                      // ascending index
+db.users.createIndex({ name: 1 }, { unique: true })    // unique index
+db.users.getIndexes()                                  // list all indexes
+db.users.dropIndex("name_1")                           // drop specific index
+db.users.find({ name: "Salman" }).explain("executionStats") // check perf
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  10. AGGREGATION PIPELINE  ← learn this next, it's powerful
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// Stages run in order like a pipeline: docs go in → transformed → come out
+
+db.users.aggregate([
+  { $match:   { age: { $gt: 20 } } },               // filter (like find)
+  { $group:   { _id: "$role", count: { $sum: 1 } } },// group + count
+  { $sort:    { count: -1 } },                        // sort result
+  { $limit:   5 },                                    // limit output
+  { $skip:    2 },                                    // skip docs
+  { $project: { name: 1, _id: 0 } },                 // shape output fields
+  { $unwind:  "$skills" },                            // flatten array field
+])
+
+// $lookup = JOIN with another collection
+{ $lookup: {
+    from: "orders",          // other collection
+    localField: "_id",       // field in current collection
+    foreignField: "userId",  // field in other collection
+    as: "userOrders"         // output field name
+}}
+
+// Common $group accumulators
+$sum   → total count or sum of field     { $sum: "$price" }
+$avg   → average                         { $avg: "$age" }
+$min   → minimum value
+$max   → maximum value
+$push  → collect values into array       { $push: "$name" }
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  QUICK REFERENCE CARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  CREATE   → insertOne()   insertMany()
+  READ     → find()        findOne()
+  UPDATE   → updateOne()   updateMany()   replaceOne()
+  DELETE   → deleteOne()   deleteMany()
+
+  OPERATORS
+  compare  → $gt $gte $lt $lte $ne $in $nin
+  logical  → $or $and $not $nor
+  array    → $push $pull $addToSet $all $size $elemMatch
+  update   → $set $unset $inc $rename
+  exist    → $exists $type
+
+  PIPELINE STAGES
+  filter   → $match
+  reshape  → $project
+  group    → $group
+  order    → $sort
+  slice    → $limit  $skip
+  arrays   → $unwind
+  join     → $lookup
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WHAT'S NEXT → MONGOOSE (Node.js)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Shell command          Mongoose equivalent
+  ─────────────────────────────────────────────────────
+  db.users.find()      → User.find()
+  insertOne({...})     → new User({...}).save()
+  updateOne(f, $set)   → User.findOneAndUpdate(f, data)
+  deleteOne({...})     → User.findOneAndDelete({...})
+  aggregate([...])     → User.aggregate([...])
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  Shell = talk directly to DB  |  Mongoose = talk via Node/Express (JS)     ║
+║  Compass = just a visual GUI, not for coding                               ║
+╚══════════════════════════════════════════════════════════════════════════════╝
