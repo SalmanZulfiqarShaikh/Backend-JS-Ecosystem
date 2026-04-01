@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | eOcean</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #3D418A 0%, #70C9C2 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-field:focus {
+            border-color: #70C9C2;
+            box-shadow: 0 0 0 3px rgba(112, 201, 194, 0.2);
+        }
+
+        .btn-ocean {
+            background-color: #3D418A;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ocean:hover {
+            background-color: #2D3066;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-md w-full glass-card rounded-3xl shadow-2xl overflow-hidden">
+        <div class="pt-10 pb-6 text-center">
+            <img src="https://help.eocean.net/knowledge/wp-content/uploads/2025/09/Eocean-Logo-01-new.webp" 
+                 alt="eOcean Logo" 
+                 class="h-12 mx-auto drop-shadow-sm">
+            <h1 class="text-2xl font-bold text-[#3D418A] mt-6">Create your account</h1>
+            <p class="text-slate-500 text-sm">Join the next wave of AI automation</p>
+        </div>
+
+        <div class="px-8 pb-10">
+            <% if(locals.error) { %>
+                <div class="mb-6 flex items-center p-4 text-sm text-red-800 border-t-4 border-red-500 bg-red-50 rounded-lg" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <div>
+                        <span class="font-medium">Error:</span> <%= locals.error %>
+                    </div>
+                </div>
+            <% } %>
+
+            <form action="/user" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Full Name</label>
+                    <input type="text" name="name" placeholder="Salman Shaikh" 
+                        class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 outline-none transition-all"
+                        required>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Email Address</label>
+                    <input type="email" name="email" placeholder="salman@eocean.com" 
+                        class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 outline-none transition-all"
+                        required>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Password</label>
+                    <input type="password" name="password" placeholder="••••••••" 
+                        class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 outline-none transition-all"
+                        required>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="btn-ocean w-full text-white font-bold py-4 rounded-xl shadow-lg">
+                        Sign Up Now
+                    </button>
+                </div>
+            </form>
+
+            <p class="text-center text-sm text-slate-600 mt-8">
+                Already have an account? 
+                <a href="/login" class="text-[#3D418A] font-bold hover:text-[#70C9C2] transition-colors">Log In</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
