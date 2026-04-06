@@ -1,0 +1,151 @@
+/* Minimalist Black & White Theme */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Outfit', sans-serif; 
+}
+
+body { 
+    background: #ffffff; 
+    color: #1a1a1a; 
+    min-height: 100vh; 
+}
+
+/* Logo Styling */
+.brand-logo {
+    display: block;
+    max-width: 180px;
+    margin: 0 auto 1.5rem auto;
+}
+
+/* Navbar */
+.navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .mini-logo { max-height: 30px; }
+
+.nav-links a { 
+    color: #666; 
+    text-decoration: none; 
+    margin-left: 1.5rem; 
+    transition: 0.2s; 
+    font-size: 0.9rem;
+}
+
+.nav-links a:hover { color: #000; }
+
+/* Containers & Layout */
+.container { 
+    max-width: 1000px; 
+    margin: 3rem auto; 
+    padding: 0 5%; 
+}
+
+.auth-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin: auto;
+}
+
+/* Typography */
+h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center; }
+.subtitle { text-align: center; color: #888; margin-bottom: 2rem; font-size: 0.95rem; }
+
+/* Forms */
+.form-group { margin-bottom: 1.2rem; }
+input {
+    width: 100%; 
+    padding: 0.8rem 1rem;
+    background: #fafafa; 
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; 
+    color: #1a1a1a; 
+    outline: none; 
+    transition: 0.3s;
+}
+
+input:focus { border-color: #000; background: #fff; }
+
+/* Buttons */
+.btn-primary {
+    width: 100%; 
+    padding: 0.8rem; 
+    border: none; 
+    border-radius: 8px;
+    background: #000; 
+    color: #fff; 
+    font-weight: 600;
+    cursor: pointer; 
+    transition: 0.2s;
+}
+
+.btn-primary:hover { background: #333; }
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-outline:hover { background: #000; color: #fff; }
+
+/* Dashboard Specific */
+.api-card {
+    background: #fff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.api-info h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+.api-key-display { 
+    font-family: monospace; 
+    color: #666; 
+    background: #f5f5f5; 
+    padding: 4px 8px; 
+    border-radius: 4px;
+}
+
+/* Utility */
+.footer-text { margin-top: 1.5rem; text-align: center; color: #888; font-size: 0.9rem; }
+.footer-text a { color: #000; text-decoration: none; font-weight: 600; }
+.error-msg { 
+    background: #fff5f5; 
+    color: #c53030; 
+    padding: 0.8rem; 
+    border-radius: 6px; 
+    margin-bottom: 1rem; 
+    font-size: 0.85rem; 
+    text-align: center;
+    border: 1px solid #feb2b2;
+}

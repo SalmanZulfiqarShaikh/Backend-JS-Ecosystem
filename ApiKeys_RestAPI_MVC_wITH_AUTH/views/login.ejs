@@ -3,100 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | API Key Manager</title>
+    <title>Login | API Manager</title>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA-mTL9pCoVxyaiV1j_w-9owCC2ErBP3sNXA&s" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-        body {
-            /* Navy background for consistent branding */
-            background: linear-gradient(135deg, #1d2a57, #141c3a);
-            color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 3rem;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
-            animation: fadeIn 0.6s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h1 {
-            font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;
-            /* Teal to White gradient */
-            background: linear-gradient(to right, #3dc7b7, #ffffff);
-            -webkit-background-clip: text; color: transparent; font-weight: 600;
-        }
-        p.subtitle { text-align: center; color: #a1b0cb; margin-bottom: 2rem; font-weight: 300; }
-        .form-group { margin-bottom: 1.2rem; position: relative; }
-        .form-group input {
-            width: 100%; padding: 1rem 1.2rem;
-            background: rgba(10, 15, 30, 0.5); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px; color: #fff; font-size: 1rem; outline: none; transition: all 0.3s;
-        }
-        .form-group input:focus {
-            border-color: #3dc7b7;
-            box-shadow: 0 0 0 2px rgba(61, 199, 183, 0.2);
-            background: rgba(10, 15, 30, 0.7);
-        }
-        .form-group input::placeholder { color: #6e7a9c; }
-        input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 30px #141c3a inset !important;
-            -webkit-text-fill-color: #fff !important;
-        }
-        button {
-            width: 100%; padding: 1rem; border: none; border-radius: 12px; margin-top: 1rem;
-            background: linear-gradient(135deg, #3dc7b7, #1d2a57);
-            color: white; font-size: 1.1rem; font-weight: 600;
-            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -10px rgba(61, 199, 183, 0.6);
-        }
-        .footer-text { margin-top: 1.5rem; text-align: center; color: #a1b0cb; }
-        .footer-text a { color: #84edd1; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-        .footer-text a:hover { color: #3dc7b7; }
-        .error-msg { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; }
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
-    <div class="glass-panel">
-    <h1>Welcome Back</h1>
-    <p class="subtitle">Log in to manage your API integrations.</p>
+<body style="display: flex; align-items: center; justify-content: center;">
+    <div class="auth-card">
+        <img src="https://eocean.net/wp-content/uploads/2025/09/eocean-logo.png" alt="e.ocean" class="brand-logo">
+        <h1>Welcome back</h1>
+        <p class="subtitle">Please enter your details</p>
 
-    <% if (locals.error) { %>
-        <div class="error-msg"><%= error %></div>
-    <% } %>
+        <% if (locals.error) { %>
+            <div class="error-msg"><%= error %></div>
+        <% } %>
 
-    <form action="/user/login" method="POST">
-        <div class="form-group">
-            <input type="text" name="identifier" required placeholder="Email or Username">
+        <form action="/user/login" method="POST">
+            <div class="form-group">
+                <input type="text" name="identifier" required placeholder="Email or Username">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" required placeholder="Password">
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+
+        <div class="footer-text">
+            New here? <a href="/">Create an account</a>
         </div>
-        <div class="form-group">
-            <input type="password" name="password" required placeholder="Password">
-        </div>
-        <button type="submit">Sign In</button>
-    </form>
-
-    <div class="footer-text">
-        Don't have an account? <a href="/">Sign up here</a>
     </div>
-</div>
 </body>
 </html>
