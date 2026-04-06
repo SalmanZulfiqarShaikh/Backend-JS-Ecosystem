@@ -1,7 +1,8 @@
 const express = require("express");
-const { cre } = require("../controllers/api");
+const { handleCreateApi } = require("../controllers/api");
+const { restrictToLoggedinUserOnly } = require("../middlewares/isLoggedIn");
 const router = express.Router();
 
-router.post("/",createNewAPI);
+router.post("/", restrictToLoggedinUserOnly, handleCreateApi);
 
 module.exports = router;
