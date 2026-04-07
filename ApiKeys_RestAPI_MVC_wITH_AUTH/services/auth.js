@@ -7,6 +7,11 @@ function setUser(user) {
     return id;
 }
 
+// Automatically delete after 1 minute
+setTimeout(() => {
+    sessionIdToUserMap.delete(id);
+}, 1 * 60 * 1000);
+
 function getUser(id) {
     return sessionIdToUserMap.get(id);
 }
