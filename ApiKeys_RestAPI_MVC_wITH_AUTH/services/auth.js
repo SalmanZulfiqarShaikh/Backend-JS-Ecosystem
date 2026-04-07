@@ -1,19 +1,29 @@
-const crypto = require("crypto");
 const sessionIdToUserMap = new Map();
+const crypto = require("crypto");
+
 
 function setUser(user) {
     const id = crypto.randomUUID();
-    sessionIdToUserMap.set(id, user);
+    
+    sessionIdToUserMap.set(id, {
+        user,
+        expiresAt: Date.now() + 1 * 60 * 1000
+    });
+
     return id;
 }
 
-// Automatically delete after 1 minute
-setTimeout(() => {
-    sessionIdToUserMap.delete(id);
-}, 1 * 60 * 1000);
-
 function getUser(id) {
-    return sessionIdToUserMap.get(id);
+    const session = sessionIdToUserMap.get(id);
+
+    if (!session) return null;
+
+    if (session.expiresAt < Date.now()) {
+        sessionIdToUserMap.delete(id);
+        return null;
+    }
+
+    return session.user;
 }
 
 module.exports = {

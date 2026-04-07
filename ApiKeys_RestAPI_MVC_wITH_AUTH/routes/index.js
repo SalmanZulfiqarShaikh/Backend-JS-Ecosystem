@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { restrictToLoggedinUserOnly } = require('../middlewares/isLoggedIn');
+const { restrictToLoggedinUserOnly, checkAuth } = require('../middlewares/isLoggedin');
 const Api = require('../models/api');
 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
     res.render('signup');
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', checkAuth, (req, res) => {
     res.render('login');
 });
 
