@@ -1,29 +1,21 @@
-const sessionIdToUserMap = new Map();
-const crypto = require("crypto");
-
+const jwt = require("jsonwebtoken");
+const secretKey = "yoyohoneysingh";
 
 function setUser(user) {
-    const id = crypto.randomUUID();
+    const payload = {
+        ...user
+    };
     
-    sessionIdToUserMap.set(id, {
-        user,
-        expiresAt: Date.now() + 1 * 60 * 1000
-    });
 
-    return id;
+    return jwt.sign(payload, secretKey, {expiresIn: "1m"});
 }
 
-function getUser(id) {
-    const session = sessionIdToUserMap.get(id);
-
-    if (!session) return null;
-
-    if (session.expiresAt < Date.now()) {
-        sessionIdToUserMap.delete(id);
+function getUser(token) {
+    try {
+        return jwt.verify(token, secretKey);
+    } catch (error) {
         return null;
     }
-
-    return session.user;
 }
 
 module.exports = {
